@@ -102,7 +102,10 @@ class DetectionConfig:
     def model_path(self) -> str:
         """Full path (directory + filename) to the active model artifact."""
         return os.path.join(self.model_directory, self.model_filename)
-
+    @property
+    def severity_thresholds(self) -> Tuple[Tuple[str, float], ...]:
+        """Backward-compatible alias for confidence_thresholds."""
+        return self.confidence_thresholds
 
 # A ready-to-use default configuration instance. Other modules may import
 # this directly, or construct their own DetectionConfig(...) for custom

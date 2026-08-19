@@ -97,6 +97,42 @@ def simulated_demo() -> None:
               f"avg_flow_time={feature_vector.avg_flow_time:.3f}s\n")
 
     print(f"Active flows tracked: {engine.get_active_flow_count()}")
+def real_capture_demo(packet_count: int = 30) -> None:
+    """Capture real network packets using Module 1 and extract features using Module 2."""
+
+    feature_engine = FeatureExtractionEngine()
+
+    def on_packet(packet_data: PacketData) -> None:
+        try:
+            feature_vector = feature_engine.extract(packet_data)
+
+            print("\n=== REAL PACKET ===")
+            print(packet_data)
+
+            print("=== EXTRACTED FEATURES ===")
+            print(feature_vector)
+
+            print("Dictionary:")
+            print(feature_vector.to_dict())
+
+        except Exception as exc:
+            print(f"[ERROR] Feature extraction failed: {exc}")
+
+    capture_engine = PacketCaptureEngine(
+        on_packet=on_packet
+    )
+
+    print("\n========================================")
+    print(" XAF REAL TRAFFIC FEATURE EXTRACTION")
+    print("========================================")
+    print(f"Capturing {packet_count} packets...")
+    print("Generate traffic by opening websites or using applications.")
+    print("========================================\n")
+
+    capture_engine.start(
+        packet_count=packet_count,
+        timeout=60
+    )
 
 
 if __name__ == "__main__":
@@ -104,4 +140,4 @@ if __name__ == "__main__":
     # works in any environment (including CI/sandboxes). Uncomment the line
     # below to run against real live traffic instead (requires root).
     #simulated_demo()
-    live_capture_demo(packet_count=40)
+    real_capture_demo(packet_count=30)

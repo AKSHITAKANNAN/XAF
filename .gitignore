@@ -1,0 +1,21 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Testing
+.pytest_cache/
+
+# Trained ML models
+trained_models/
+*.joblib
+
+# Datasets
+datasets/
+
+# Packet captures
+*.pcap
+*.pcapng
+
+# Environment/secrets
+.env
